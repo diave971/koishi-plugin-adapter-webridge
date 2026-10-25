@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["es2022"],
+    "types": ["node"],
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "strict": true,
+    // satori 官方的 tsconfig.base.json 是 `strict: false`。它对 `strictFunctionTypes`
+    // 尤其敏感：`Bot` 基类的 `static MessageEncoder` 声明成 `new (bot: Bot<...>) => ...`，
+    // 子类的编码器收窄成具体 Bot 类型后，在逆变检查下会被判为不兼容（官方适配器靠关
+    // 严格模式绕过）。这里只关掉这一项，保留 strictNullChecks 等真正有用的检查。
+    "strictFunctionTypes": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "rootDir": "src",
+    "outDir": "lib"
+  },
+  "include": ["src"]
+}

@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": ".",
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "noUnusedLocals": false
+  },
+  "include": [
+    "src",
+    "tests"
+  ]
+}

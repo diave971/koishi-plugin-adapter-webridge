@@ -1,0 +1,107 @@
+{
+  "name": "koishi-plugin-adapter-webridge",
+  "version": "1.0.0",
+  "description": "WeBridge 个人微信适配器：手机上的 WeBridge 插件作为 WebSocket 客户端连入 Koishi",
+  "type": "module",
+  "main": "lib/index.cjs",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.mjs"
+      },
+      "require": {
+        "types": "./lib/index.d.cts",
+        "default": "./lib/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "src",
+    "docs",
+    "ARCHIVE.md",
+    "CHANGELOG.md"
+  ],
+  "author": "阿飞",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sevenfate/koishi-plugin-adapter-webridge.git"
+  },
+  "homepage": "https://github.com/sevenfate/koishi-plugin-adapter-webridge#readme",
+  "bugs": {
+    "url": "https://github.com/sevenfate/koishi-plugin-adapter-webridge/issues"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "bot",
+    "chatbot",
+    "koishi",
+    "plugin",
+    "adapter",
+    "webridge",
+    "wechat"
+  ],
+  "koishi": {
+    "description": {
+      "zh": "WeBridge 个人微信适配器",
+      "en": "WeBridge personal WeChat adapter"
+    },
+    "category": "adapter",
+    "service": {
+      "required": [
+        "server"
+      ],
+      "optional": [
+        "database"
+      ]
+    }
+  },
+  "scripts": {
+    "clean": "node -e \"const fs=require('node:fs'),p=require('node:path').resolve('lib'); if(require('./package.json').name!=='koishi-plugin-adapter-webridge') throw new Error('unexpected package'); fs.rmSync(p,{recursive:true,force:true})\"",
+    "build": "npm run clean && npm run build:js && npm run build:dts",
+    "build:js": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=lib/index.mjs --external:koishi --external:@koishijs/core --external:@satorijs/core --external:@satorijs/element --external:@cordisjs/plugin-server --external:schemastery --external:silk-wasm && esbuild src/index.ts --bundle --platform=node --format=cjs --outfile=lib/index.cjs --external:koishi --external:@koishijs/core --external:@satorijs/core --external:@satorijs/element --external:@cordisjs/plugin-server --external:schemastery --external:silk-wasm",
+    "build:dts": "tsc -p tsconfig.json && node -e \"require('node:fs').copyFileSync('lib/index.d.ts','lib/index.d.cts')\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.check.json",
+    "test": "tsx tests/protocol.spec.ts && tsx tests/reliability.spec.ts && tsx tests/e2e.spec.ts && tsx tests/media.spec.ts && tsx tests/native.spec.ts && tsx --test tests/directory.spec.ts tests/archive.spec.ts tests/integration.spec.ts",
+    "test:all": "npm run typecheck && npm test",
+    "prepack": "npm run build"
+  },
+  "peerDependencies": {
+    "@koishijs/core": "^4.18.11",
+    "@koishijs/plugin-server": "^3.2.9",
+    "@satorijs/core": "^4.6.0",
+    "@satorijs/element": "^3.2.0",
+    "koishi": "^4.18.11"
+  },
+  "dependencies": {
+    "schemastery": "^3.18.0",
+    "silk-wasm": "3.7.1"
+  },
+  "devDependencies": {
+    "@koishijs/core": "^4.18.11",
+    "@koishijs/plugin-database-postgres": "^2.7.0",
+    "@koishijs/plugin-database-sqlite": "^4.7.0",
+    "@koishijs/plugin-server": "^3.2.9",
+    "@satorijs/core": "^4.6.0",
+    "@satorijs/element": "^3.2.0",
+    "@types/node": "^22.0.0",
+    "@types/ws": "^8.18.1",
+    "esbuild": "^0.27.2",
+    "koishi": "^4.18.11",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.2",
+    "ws": "^8.19.0"
+  }
+}
